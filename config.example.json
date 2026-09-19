@@ -1,0 +1,14 @@
+{
+  "keywords": ["Click the emoji below to join"],
+  "emoji": ["👍", "Swrd900:1387054688477642782"],
+  "react_on_first_run": true,
+  "channels": [
+    "https://discord.com/channels/111111111111111111/222222222222222222",
+    "333333333333333333",
+    {
+      "url": "https://discord.com/channels/444444444444444444/555555555555555555",
+      "keywords": ["airdrop", "claim"],
+      "emoji": ["🔥"]
+    }
+  ]
+}

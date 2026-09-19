@@ -1,0 +1,5 @@
+# one account per line: token or token,proxy   (proxy format: user:pass@host:port)
+# no proxy on a line = that account works directly, without a proxy
+# a dead proxy is replaced by the first one from Proxy.txt (and removed from there)
+MTIzNDU2Nzg5MDEyMzQ1Njc4.AbCdEf.token_of_account_1
+MTIzNDU2Nzg5MDEyMzQ1Njc4.GhIjKl.token_of_account_2,user:pass@host:port

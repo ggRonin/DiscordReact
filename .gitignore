@@ -1,0 +1,10 @@
+.env
+accounts.txt
+Proxy.txt
+config.json
+state.json
+[0-9]*.json
+*.tmp
+__pycache__/
+.venv/
+.idea/
