@@ -30,7 +30,7 @@ POLL_MIN, POLL_MAX = 15, 30
 CHANNEL_GAP_MIN, CHANNEL_GAP_MAX = 2, 5      # pause between channels inside one cycle
 ACCOUNT_START_MIN, ACCOUNT_START_MAX = 5, 20  # stagger between accounts at startup
 REACT_DELAY_MIN, REACT_DELAY_MAX = 3, 12
-HISTORY_LIMIT = 50
+HISTORY_LIMIT = 100
 
 API = "https://discord.com/api/v9"
 GATEWAY = "wss://gateway.discord.gg/?v=9&encoding=json"
