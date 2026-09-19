@@ -506,7 +506,8 @@ class Account:
             "PUT", f"/channels/{channel.id}/messages/{msg_id}/reactions/{emoji}/@me",
             params={"location": "Message", "type": 0}, headers=channel.headers,
         )
-        log(self.label, f"channel {channel.id}: react {emoji} on {msg_id}: {r.status_code}")
+        detail = "" if r.status_code in (200, 204) else f" {r.text[:200]}"
+        log(self.label, f"channel {channel.id}: react {emoji} on {msg_id}: {r.status_code}{detail}")
         return r.status_code
 
     # ── Matching ────────────────────────────────────────────────────────────
@@ -545,8 +546,8 @@ class Account:
         for i, emoji in enumerate(todo):
             time.sleep(random.uniform(REACT_DELAY_MIN, REACT_DELAY_MAX) if i == 0 else random.uniform(1, 3))
             status = self.react(channel, target["id"], emoji)
-            # 403/404 never get better by retrying: skip it; other errors retry next poll
-            if status not in (200, 204, 403, 404):
+            # 400/403/404 never get better by retrying: skip it; other errors retry next poll
+            if status not in (200, 204, 400, 403, 404):
                 return last_reacted
         last_reacted = int(target["id"])
         save_state(channel.id, self.user_id, last_reacted)
