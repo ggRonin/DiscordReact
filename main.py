@@ -187,10 +187,8 @@ def as_list(value):
 
 
 class Channel:
-    def __init__(self, entry, default_keywords, default_emojis, default_first_run):
-        if isinstance(entry, str):
-            entry = {"url": entry}
-        ref = str(entry.get("url") or entry.get("id") or "")
+    def __init__(self, ref, keywords, emoji, react_on_first_run):
+        ref = str(ref)
         m = re.search(r"channels/(\d+|@me)/(\d+)", ref)
         if m:
             self.guild_id, self.id = m.group(1), m.group(2)
@@ -198,11 +196,9 @@ class Channel:
             self.guild_id, self.id = None, ref
         else:
             sys.exit(f"config.json: cannot read channel from {ref!r}")
-        self.keywords = [norm_text(k) for k in as_list(entry.get("keywords")) if k.strip()] or default_keywords
-        self.emojis = as_list(entry.get("emoji")) or default_emojis
-        self.react_on_first_run = entry.get("react_on_first_run", default_first_run)
-        if not self.keywords:
-            sys.exit(f"config.json: no keywords for channel {self.id}")
+        self.keywords = keywords
+        self.emojis = [emoji]
+        self.react_on_first_run = react_on_first_run
 
     @property
     def headers(self):
@@ -221,9 +217,13 @@ def load_config():
     except (OSError, ValueError) as e:
         sys.exit(f"cannot read config.json: {e}")
     keywords = [norm_text(k) for k in as_list(cfg.get("keywords")) if k.strip()]
-    emojis = as_list(cfg.get("emoji")) or ["👍"]
+    if not keywords:
+        sys.exit("config.json: no keywords")
+    emoji = cfg.get("emoji") or "👍"
+    if not isinstance(emoji, str):
+        sys.exit('config.json: "emoji" must be a single string')
     first_run = cfg.get("react_on_first_run", True)
-    channels = [Channel(c, keywords, emojis, first_run) for c in cfg.get("channels", [])]
+    channels = [Channel(c, keywords, emoji, first_run) for c in cfg.get("channels", [])]
     if not channels:
         sys.exit("config.json: no channels")
     return channels
